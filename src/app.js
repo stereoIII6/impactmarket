@@ -20,10 +20,32 @@ protocol: "https"});
 const List = require("../build/contracts/List.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
+
 const walletin = document.getElementById('walletin');
 const emailin = document.getElementById('email');
 const namein = document.getElementById('name');
 const form = document.getElementById("form");
+const token_btn = document.getElementById("token_btn");
+const gov_btn = document.getElementById("gov_btn");
+const stage = document.getElementById("stage");
+const token_stage = document.getElementById("token_stage");
+const gov_stage = document.getElementById("gov_stage");
+const showTokens = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    stage.style.display = "none";
+    token_stage.style.display = "grid";
+    gov_stage.style.display = "none";
+}
+const showGov = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    stage.style.display = "none";
+    gov_stage.style.display = "grid";
+    token_stage.style.display = "none";
+}
+token_btn.addEventListener("click", showTokens);
+gov_btn.addEventListener("click", showGov);
 
 
 const initialize = () => {
@@ -76,9 +98,6 @@ const initialize = () => {
             walletin.style.opacity = 0.8;   
         }
     }
-    emailin.addEventListener("keyup" ,enable);
-    namein.addEventListener("keyup",enable);
-    walletin.addEventListener("mouseover",enable);
     const clickInstall = () => {
         alert("You are being redirected to the official download of Metamask.io ... Please Follow their installation instructions.");
         window.open("https://metamask.io");
