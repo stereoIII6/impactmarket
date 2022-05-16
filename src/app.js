@@ -16,8 +16,8 @@ const client = require('ipfs-http-client');
 const ipfs = client.create({host: "ipfs.infura.io",
 port: "5001",
 protocol: "https"});
-// const s0xiety = require("../build/contracts/s0xiety.json");
-const List = require("../build/contracts/List.json");
+const Init = require("../dist/contracts/Init.json");
+const List = require("../dist/contracts/List.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
@@ -42,6 +42,7 @@ const gov_stage = document.getElementById("gov_stage");
 const home_stage = document.getElementById("home_stage");
 const info_stage = document.getElementById("info_stage");
 const user_stage = document.getElementById("user_stage");
+
 const showTokens = (e) => {
     e.preventDefault();
     console.log(e.target);
@@ -88,13 +89,17 @@ const showUser = (e) => {
     info_stage.style.display = "none";
     user_stage.style.display = "grid";
 }
+const showNetMenu = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+}
 token_btn.addEventListener("click", showTokens);
 gov_btn.addEventListener("click", showGov);
 info_btn.addEventListener("click", showInfo);
 home_btn.addEventListener("click", showHome);
 logo.addEventListener("click", showHome);
 profile_btn.addEventListener("click", showUser);
-
+net_btn.addEventListener("click",showNetMenu);
 
 const initialize = () => {
     //Basic Actions Section
@@ -103,8 +108,8 @@ const initialize = () => {
         const { ethereum } = window;
         return Boolean(ethereum && ethereum.isMetaMask);
     };
-    const whiteList = async (e) => {
-        console.log("go");
+    const netCheck = async (e) => {
+        // console.log("go");
         try {
             // Will open the MetaMask UI
             profile_btn.innerHTML = 'Connecting ...';
@@ -154,7 +159,7 @@ const initialize = () => {
         //If it is installed we change our button text
         profile_btn.disabled = true;
         profile_btn.value = 'Get Listed !'
-        profile_btn.addEventListener("click",whiteList);
+        profile_btn.addEventListener("click",netCheck);
         }
     };
     MetaMaskClientCheck();

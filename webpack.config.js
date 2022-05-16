@@ -20,7 +20,7 @@ module.exports = {
     },
     devtool: "inline-source-map",
     devServer: {
-        watchFiles: path.resolve(__dirname, "build"),
+        watchFiles: path.resolve(__dirname, "dist"),
         compress: true,
         client: {
             reconnect: true,
