@@ -1,4 +1,16 @@
+
 /*
+
+// 			                  _        _                            _   
+// 			                 | |      (_)                          | |  
+// 			  _ __ ___   __ _| | _____ _ _ __ ___  _ __   __ _  ___| |_ 
+// 			 | '_ ` _ \ / _` | |/ / _ \ | '_ ` _ \| '_ \ / _` |/ __| __|
+// 			 | | | | | | (_| |   <  __/ | | | | | | |_) | (_| | (__| |_ 
+// 			 |_| |_| |_|\__,_|_|\_\___|_|_| |_| |_| .__/ \__,_|\___|\__|
+// 			                                      | |                   
+// 			                                      |_|   
+    
+
 Solidity Style Guide from docs (just a guide, just in case):
 (https://docs.soliditylang.org/en/v0.8.13/style-guide.html) 
 - Layout contract elements in the following order:

@@ -3,15 +3,15 @@ body{
   margin: 0px auto;
   width: 100%;
   height: 100%;
-  background: black;
+  background: mediumseagreen;
 }
 a,#logo{
   text-decoration:none;
-  color:black;
+  color:mediumseagreen;
   margin:0;
   padding:0.3em;
-  background: tomato;
-  border: 1px solid black;
+  background: black;
+  border: 1px solid mediumseagreen;
   border-radius: 9px;
   text-align: center;
 }
@@ -30,8 +30,8 @@ a,#logo{
   padding: 1em;
   height: calc(50px - 2em);
   width: calc(100% - 2em);
-  background: black;  
-  color: tomato;
+  background: mediumseagreen;  
+  color: black;
 }
 #logo{ grid-column: 1/2;}
 #links{ grid-column: 3/8;}
@@ -47,7 +47,7 @@ a,#logo{
   grid-row: 2;
   height: 100%;
   width: 100%;
-  background: tomato;
+  background: black;
   padding: 1em;
   height: calc(100% - 2em);
   width: calc(100% - 2em);  
@@ -57,21 +57,29 @@ a,#logo{
   grid-column: 2/4;
   background: none;
   padding : 1em;
-  border: 1px solid black;
+  border: 1px solid mediumseagreen;
+  border-radius: 9px;
+  overflow: hidden;
+}
+img{
+  width: 100%;
+  border: 1px solid mediumseagreen;
   border-radius: 9px;
 }
+#logo_img{border:none;}
 #article_head{grid-row: 2;
   grid-column: 4/8;
   background: none;
   padding : 1em;
-  border: 1px solid black;
+  border: 1px solid mediumseagreen;
   border-radius: 9px;
+  font-size: 3em;
 }
 #article_body{grid-row: 3/6;
   grid-column: 4/8;
   background: none;
   padding : 1em;
-  border: 1px solid black;
+  border: 1px solid mediumseagreen;
   border-radius: 9px;
 }
 #article_foot{
@@ -79,26 +87,25 @@ a,#logo{
   grid-column: 2/8;
   background: none;
   padding : 1em;
-  border: 1px solid black;
+  border: 1px solid mediumseagreen;
   border-radius: 9px;
 }
 #foot{
   grid-row: 3;
   height: 50px;
-
-  background: black;
-  color: white;
+  background: mediumseagreen;
   padding: 1em;
   height: calc(50px - 2em);
   width: calc(100% - 2em);
-  color: tomato;
+  color: black;
 }
 .stage{
   display: grid;
   grid-template-columns: 1em 1fr 1fr 1fr 1fr 1fr 1fr 1em;
   grid-template-rows: 2em 1fr 1fr 1fr 1fr 1fr 1fr 2em;
   grid-gap: 1em;
-  background: tomato;
+  background: black;
+  color: mediumseagreen;
 }
 #token_stage,#gov_stage,#info_stage,#user_stage{display:none;}
 .bar{
