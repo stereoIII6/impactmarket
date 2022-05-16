@@ -21,31 +21,70 @@ const List = require("../build/contracts/List.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
-const walletin = document.getElementById('walletin');
-const emailin = document.getElementById('email');
-const namein = document.getElementById('name');
-const form = document.getElementById("form");
 const token_btn = document.getElementById("token_btn");
 const gov_btn = document.getElementById("gov_btn");
-const stage = document.getElementById("stage");
+const info_btn = document.getElementById("info_btn");
+const home_btn = document.getElementById("home_btn");
+const profile_btn = document.getElementById("profile_btn");
+const wallet_btn = document.getElementById("wallet_btn");
+const net_btn = document.getElementById("net_btn");
+
 const token_stage = document.getElementById("token_stage");
 const gov_stage = document.getElementById("gov_stage");
+const home_stage = document.getElementById("home_stage");
+const info_stage = document.getElementById("info_stage");
+const user_stage = document.getElementById("user_stage");
 const showTokens = (e) => {
     e.preventDefault();
     console.log(e.target);
-    stage.style.display = "none";
     token_stage.style.display = "grid";
     gov_stage.style.display = "none";
+    home_stage.style.display = "none";
+    info_stage.style.display = "none";
+    user_stage.style.display = "none";
+
 }
 const showGov = (e) => {
     e.preventDefault();
     console.log(e.target);
-    stage.style.display = "none";
     gov_stage.style.display = "grid";
     token_stage.style.display = "none";
+    home_stage.style.display = "none";
+    info_stage.style.display = "none";
+    user_stage.style.display = "none";
+}
+const showHome = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    gov_stage.style.display = "none";
+    token_stage.style.display = "none";
+    home_stage.style.display = "grid";
+    info_stage.style.display = "none";
+    user_stage.style.display = "none";
+}
+const showInfo = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    gov_stage.style.display = "none";
+    token_stage.style.display = "none";
+    home_stage.style.display = "none";
+    info_stage.style.display = "grid";
+    user_stage.style.display = "none";
+}
+const showUser = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    gov_stage.style.display = "none";
+    token_stage.style.display = "none";
+    home_stage.style.display = "none";
+    info_stage.style.display = "none";
+    user_stage.style.display = "grid";
 }
 token_btn.addEventListener("click", showTokens);
 gov_btn.addEventListener("click", showGov);
+info_btn.addEventListener("click", showInfo);
+home_btn.addEventListener("click", showHome);
+profile_btn.addEventListener("click", showUser);
 
 
 const initialize = () => {
@@ -59,7 +98,7 @@ const initialize = () => {
         console.log("go");
         try {
             // Will open the MetaMask UI
-            walletin.innerHTML = 'Connecting ...';
+            profile_btn.innerHTML = 'Connecting ...';
             // You should disable this button while the request is pending!
             await ethereum.request({ method: 'eth_requestAccounts' });
            // console.log("what");
@@ -75,28 +114,14 @@ const initialize = () => {
                               if(Number(network) === 200) networkTag =  "Arbitrum";
                               if(Number(network) === 43224) networkTag =  "Avalanche";
                               if(Number(network) === 1312) networkTag = "ACAB";
-          walletin.innerHTML = networkTag;
+          net_btn.innerHTML = networkTag;
           const UserData = await log();
           // console.log(UserData);
           
           } catch (error) {
             console.error(error);
-            walletin.innerText = 'GET WHITELISTED !';
+            profile_btn.innerText = 'GET WHITELISTED !';
           }
-    }
-    const enable = (e) => {
-        let x = 0;
-        console.log(emailin.value.length,namein.value.length);
-        if(emailin.value.length >= 10) x++;
-        if(namein.value.length >= 6) x++;
-        if(x == 2) {
-            walletin.disabled = false;
-            walletin.style.opacity = 1;
-        }
-        else if(x < 2) {
-            walletin.disabled = true;
-            walletin.style.opacity = 0.8;   
-        }
     }
     const clickInstall = () => {
         alert("You are being redirected to the official download of Metamask.io ... Please Follow their installation instructions.");
@@ -128,14 +153,14 @@ const initialize = () => {
         //Now we check to see if MetaMask is installed
         if (!isMetaMaskInstalled()) {
         //If it isn't installed we ask the user to click to install it
-        walletin.value = 'Click here to install MetaMask!';
-        walletin.addEventListener("click",clickInstall);
+        profile_btn.value = 'Click here to install MetaMask!';
+        profile_btn.addEventListener("click",clickInstall);
         } else {
         //If it is installed we change our button text
-        walletin.disabled = true;
-        walletin.style.opacity = 0.8;
-        walletin.value = 'Get Listed !'
-        walletin.addEventListener("click",whiteList);
+        profile_btn.disabled = true;
+        profile_btn.style.opacity = 0.8;
+        profile_btn.value = 'Get Listed !'
+        profile_btn.addEventListener("click",whiteList);
         }
     };
     MetaMaskClientCheck();
