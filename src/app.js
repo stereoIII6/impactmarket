@@ -125,6 +125,11 @@ const showNetMenu = (e) => {
     modalfoot.innerHTML = "<h3>you will be directed to a metamask popup</h3>";
     modal.style.display = "grid";
 }
+const hideNetMenu = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    modal.style.display = "none";
+}
 const submitUserForm = async (e) => {
     e.preventDefault();
     const s0x = await s0xCon();
@@ -138,7 +143,7 @@ const submitUserForm = async (e) => {
         useravt: uavt.value 
     }
     console.log(obj);
-    const makeU = await s0x.makeU(obj)
+    const makeU = await s0x.makeU(JSON.stringify(obj));
     // push object & make user 
     
 }
@@ -149,6 +154,7 @@ home_btn.addEventListener("click", showHome);
 logo.addEventListener("click", showHome);
 profile_btn.addEventListener("click", showUser);
 net_btn.addEventListener("click",showNetMenu);
+modal.addEventListener("click",hideNetMenu);
 submit_uform.addEventListener("click", submitUserForm);
 
 const initialize = () => {
