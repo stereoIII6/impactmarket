@@ -5,7 +5,7 @@ body{
   height: 100%;
   background: mediumseagreen;
 }
-a,#logo{
+a{
   text-decoration:none;
   color:mediumseagreen;
   margin:0;
@@ -13,6 +13,11 @@ a,#logo{
   background: black;
   border: 1px solid mediumseagreen;
   border-radius: 9px;
+  text-align: center;
+}
+#logo{
+  margin:0;
+  padding:0.3em;
   text-align: center;
 }
 #main{
@@ -24,6 +29,7 @@ a,#logo{
   display: grid;
   grid-template-rows: 1fr 15fr 2fr;
   grid-gap: 0.1em;
+  background: black;
 }
 #nav{
   grid-row: 1;
@@ -40,7 +46,9 @@ a,#logo{
 #token_btn{ grid-column: 7/10;}
 #gov_btn{grid-column: 10/13;}
 #account{ grid-column: 8/13;}
-#profile_btn{ grid-column: 5/9;}
+#profile_btn{ grid-column: 2/5;}
+#vyz_btn{ grid-column: 5/7;}
+#lyx_btn{ grid-column: 7/9;}
 #wallet_btn{ grid-column: 9/11;}
 #net_btn{ grid-column: 11/13;}
 #show{
@@ -74,6 +82,7 @@ img{
   border: 1px solid mediumseagreen;
   border-radius: 9px;
   font-size: 3em;
+  background: black;
 }
 #article_body{grid-row: 3/6;
   grid-column: 4/8;
@@ -81,7 +90,44 @@ img{
   padding : 1em;
   border: 1px solid mediumseagreen;
   border-radius: 9px;
+  background: black;
 }
+#user_form{
+  grid-row: 2/12;
+  grid-column: 3/7;
+
+}
+#user_avt{
+  grid-row: 2/8;
+  grid-column: 7/12;
+  
+  border-radius: 9px;
+  overflow: hidden;
+}
+#user_form_labels{
+  grid-row: 2/12;
+  grid-column: 2/3;
+  text-align: left;
+  overflow: hidden;
+}
+#user_form_submit{
+  grid-row: 13;
+  grid-column: 1/13;
+  text-align: center;
+  background-color: mediumseagreen;
+  color: black;
+  border-radius: 9px;
+  font-size: 2em;
+
+}
+input{
+  background: black;
+  color: mediumseagreen;
+  border: 1px solid mediumseagreen;
+  border-radius: 9px;
+  padding-left: 1em;
+  font-family: courier;
+ }
 #article_foot{
   grid-row: 6/7;
   grid-column: 2/8;
@@ -89,6 +135,7 @@ img{
   padding : 1em;
   border: 1px solid mediumseagreen;
   border-radius: 9px;
+  background: black;
 }
 #foot{
   grid-row: 3;
@@ -99,12 +146,50 @@ img{
   width: calc(100% - 2em);
   color: black;
 }
+#modal{
+  position:absolute;
+  margin: 0em auto;
+  background: rgba(white,0.9);
+  top:20%;
+  left: 20%;
+  z-index: 10;
+  width: 60%;
+  height: 60%;
+  border-radius: 9px;
+  padding:1em;
+  border: 1px solid black;
+}
+#modalhead{
+  grid-row: 1;
+  grid-column: 1/-1;
+  text-align: center;
+  margin-bottom: 1em;
+}
+#close{
+  background: tomato;
+  border-radius: 50%;
+  grid-row: 1;
+  grid-column: 11;
+  height: 18px;
+  width: 18px;
+  color: ivory;
+}
+#modalbody{
+  grid-row:2/12;
+  grid-column: 1/-1;
+  text-align: center;
+}
+#modalfoot{
+  grid-row: 12;
+  grid-column: 1/-1;
+  text-align: center;
+}
 .stage{
   display: grid;
   grid-template-columns: 1em 1fr 1fr 1fr 1fr 1fr 1fr 1em;
   grid-template-rows: 2em 1fr 1fr 1fr 1fr 1fr 1fr 2em;
   grid-gap: 1em;
-  background: black;
+  //background: black;
   color: mediumseagreen;
 }
 #token_stage,#gov_stage,#info_stage,#user_stage{display:none;}

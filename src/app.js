@@ -42,6 +42,17 @@ const gov_stage = document.getElementById("gov_stage");
 const home_stage = document.getElementById("home_stage");
 const info_stage = document.getElementById("info_stage");
 const user_stage = document.getElementById("user_stage");
+const modal = document.getElementById("modal");
+const modalhead = document.getElementById("modalhead");
+const modalbody = document.getElementById("modalbody");
+const modalfoot = document.getElementById("modalfoot");
+const submit_uform = document.getElementById("user_form_submit");
+const uname = document.getElementById("uname_inp");
+const umail = document.getElementById("umail_inp");
+const unum = document.getElementById("unum_inp");
+const utwt = document.getElementById("utwt_inp");
+const usts = document.getElementById("usts_inp");
+const uavt = document.getElementById("uavt_inp");
 
 const showTokens = (e) => {
     e.preventDefault();
@@ -92,6 +103,28 @@ const showUser = (e) => {
 const showNetMenu = (e) => {
     e.preventDefault();
     console.log(e.target);
+    modalhead.innerHTML = "<h1>please select a network</h1>";
+    modalbody.innerHTML = "<button id='eth' class='box'>ETH Mainnet</button>";
+    modalbody.innerHTML += "<button id='poly' class='box'>Polygon Mainnet</button>";
+    modalbody.innerHTML += "<button id='opti' class='box'>Optimism Mainnet</button>";
+    modalbody.innerHTML += "<button id='avax' class='box'>Avalanche Mainnet</button>";
+    modalbody.innerHTML += "<button id='celo' class='box'>Celo Mainnet</button>";
+    modalfoot.innerHTML = "<h3>you will be directed to a metamask popup</h3>";
+    modal.style.display = "grid";
+}
+const submitUserForm = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    const obj = {
+        username: uname.value,
+        usermail: umail.value,
+        usertel: unum.value,
+        usertwt: utwt.value,
+        userstatus:  usts.value,
+        useravt: uavt.value 
+    }
+    console.log(obj);
+    // push object & make user 
 }
 token_btn.addEventListener("click", showTokens);
 gov_btn.addEventListener("click", showGov);
@@ -100,8 +133,10 @@ home_btn.addEventListener("click", showHome);
 logo.addEventListener("click", showHome);
 profile_btn.addEventListener("click", showUser);
 net_btn.addEventListener("click",showNetMenu);
+submit_uform.addEventListener("click", submitUserForm);
 
 const initialize = () => {
+    modal.style.display = "none";
     //Basic Actions Section
     const isMetaMaskInstalled = () => {
         //Have to check the ethereum binding on the window object to see if it's installed

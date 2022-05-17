@@ -17,6 +17,8 @@
         </div>
         <div id="account" class="bar">
           <a href="#" id="profile_btn" class="box">login</a>
+          <a href="#" id="vyz_btn" class="box">0 VYZ</a>
+          <a href="#" id="lyx_btn" class="box">0 LYX</a>
           <a href="#" id="wallet_btn" class="box">0 MLQ</a>
           <a href="#" id="net_btn" class="box">network</a>
         </div>
@@ -39,10 +41,33 @@
         </div>
         <div id="article_head" class="ad">
           your profile
-        </div><div id="article_body" class="ad">
-          hello advertisement post division is in the place to be right now ...
-        </div><div id="article_foot" class="ad">
-          hello advertisement post division is in the place to be right now ...
+        </div>
+        <div id="article_body" class="stage">
+
+          <div id="user_form_labels" class="list">
+            <div>Name</div> 
+            <div>Mail</div> 
+            <div>Tel.</div> 
+            <div>Twitter</div>  
+            <div>Status</div>  
+          </div>
+          <div id="user_form" class="list">
+          <input type="text" id="uname_inp" class="formfield" placeholder="username" />
+          <input type="text" id="umail_inp" class="formfield" placeholder="email address" />
+          <input type="text" id="unum_inp" class="formfield"  placeholder="telephone number"/>
+          <input type="text" id="utwt_inp" class="formfield"  placeholder="twitter handle"/>
+          <input type="text" id="usts_inp" class="formfield"  placeholder="your status"/>
+          <input type="text" id="uavt_inp" class="formfield"  placeholder="your image hash"/>
+          </div>
+          <div id="user_avt" class="box">
+            <img src="https://www.w3schools.com/w3images/avatar2.png" id="avt"/>
+          </div>
+          <a id="user_form_submit" class="box">
+            create your profile
+          </a>
+        </div>
+        <div id="article_foot" class="ad">
+          your profile footer
         </div>
       </div>
       <div id="info_stage" class="stage">
@@ -85,7 +110,12 @@
         &copy; 2022. All rights reserved.
       </div>
     </div>
-    
+    <div id="modal" class="stage">
+      <div id='close'>x</div>
+      <div id="modalhead" class="box">Modal</div>
+      <div id="modalbody" class="list">Information</div>
+      <div id="modalfoot" class="box">Button</div>
+    </div>
   </body>
   
 </html>
