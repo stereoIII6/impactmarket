@@ -84,7 +84,8 @@ img{
   font-size: 3em;
   background: black;
 }
-#article_body{grid-row: 3/6;
+#article_body,#article_bodyUS{
+  grid-row: 3/6;
   grid-column: 4/8;
   background: none;
   padding : 1em;
@@ -92,6 +93,13 @@ img{
   border-radius: 9px;
   background: black;
 }
+#heading{
+  grid-row: 2/6;
+  grid-column: 2/6;
+  text-align: left;
+  overflow: hidden;
+}
+p,h1,h2,h3{padding:0;margin:0;}
 #user_form{
   grid-row: 2/12;
   grid-column: 3/7;

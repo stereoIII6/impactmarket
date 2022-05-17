@@ -46,6 +46,9 @@ const modal = document.getElementById("modal");
 const modalhead = document.getElementById("modalhead");
 const modalbody = document.getElementById("modalbody");
 const modalfoot = document.getElementById("modalfoot");
+const article_body = document.getElementById("article_bodyUS");
+const ufSubmit = document.getElementById("user_form_submit");
+const usimg = document.getElementById("us_img");
 const submit_uform = document.getElementById("user_form_submit");
 const uname = document.getElementById("uname_inp");
 const umail = document.getElementById("umail_inp");
@@ -54,6 +57,15 @@ const utwt = document.getElementById("utwt_inp");
 const usts = document.getElementById("usts_inp");
 const uavt = document.getElementById("uavt_inp");
 
+const s0xCon = async () => {
+    const deploymentKey = Object.keys(Init.networks)[0];
+    console.log(Init.abi,Init.networks[deploymentKey].address,signer);
+    return new ethers.Contract(
+      Init.networks[deploymentKey].address,
+      Init.abi,
+      signer
+    );
+  };
 const showTokens = (e) => {
     e.preventDefault();
     console.log(e.target);
@@ -113,8 +125,9 @@ const showNetMenu = (e) => {
     modalfoot.innerHTML = "<h3>you will be directed to a metamask popup</h3>";
     modal.style.display = "grid";
 }
-const submitUserForm = (e) => {
+const submitUserForm = async (e) => {
     e.preventDefault();
+    const s0x = await s0xCon();
     console.log(e.target);
     const obj = {
         username: uname.value,
@@ -125,6 +138,7 @@ const submitUserForm = (e) => {
         useravt: uavt.value 
     }
     console.log(obj);
+    const makeU = await s0x.makeU(obj)
     // push object & make user 
     
 }
@@ -146,15 +160,7 @@ const initialize = () => {
         return Boolean(ethereum && ethereum.isMetaMask);
     };
 
-    const s0xCon = async () => {
-        const deploymentKey = Object.keys(Init.networks)[0];
-        console.log(Init.abi,Init.networks[deploymentKey].address,signer);
-        return new ethers.Contract(
-          Init.networks[deploymentKey].address,
-          Init.abi,
-          signer
-        );
-      };
+    
     
     const netCheck = async (e) => {
         // console.log("go");
@@ -195,21 +201,29 @@ const initialize = () => {
         accounts = await ethereum.request({ method: 'eth_accounts' });
         console.log(accounts[0],provider.getCode(accounts[0]));
         
-        const pro = await s0x.showU();
-        let isUser = false;
-        if(pro.role >= 1) isUser = true;
-        console.log(pro)
-        if(isUser) { // 
+        const isUser = await s0x.isUserBool(accounts[0]);
+        
+        if(!isUser) { // 
             console.log(isUser);
-            if(Number(role._hex) >= 99) profile_btn.style.background = "tomato";
             profile_btn.innerHTML = accounts[0].slice(0,4)+"..."+accounts[0].slice(39,42);
-            return pro;
+            ufSubmit.addEventListener("click", submitUserForm);
+            return isUser;
         }
         else {
             console.log(isUser);
-            profile = await s0x.showU(); 
-            console.log(profile);
-            profile_btn.innerHTML = ""
+            const role = await s0x.getRole(accounts[0]);
+            if(Number(role._hex) >= 99) {
+                profile_btn.style.background = "tomato";
+                profile_btn.style.border = "1px solid black";
+                profile_btn.style.color = "black";
+            }
+            let profileGrab = await s0x.showU(); 
+            console.log(profileGrab);
+            profile = JSON.parse(profileGrab[0]);
+            article_body.innerHTML = "<div id='heading' class='list'><h3>@"+profile.username+"</h3><p>"+profile.usermail+"</p><p>"+profile.usertel+"</p><h2>'"+profile.userstatus+"'</h2></div>";
+            usimg.src = profile.useravt;
+            profile_btn.innerHTML = "@"+profile.username;
+            return profile;
         }
     };
 

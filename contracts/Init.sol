@@ -73,6 +73,7 @@ contract Init{
     IERC20 internal LYX;
     IERC20 internal VYZ;
     mapping(address => bool) internal isUser;
+    mapping(address => bool) internal blacklist;
     event Log(uint256 indexed id, address sender, address home, uint256 num, bytes message, uint256 stamp);
     event Wait(uint256 indexed id, address sender, address home, uint256 num, bytes message, uint256 stamp);
     uint256 logs;
@@ -89,10 +90,10 @@ contract Init{
         avax = _avx;
         isUser[author] = true;
         role[author] = 99;
-        uData[author] = bytes("{username: stereo,usermail: type.stereo@pm.me,usertel: 00491631107542,usertwt: @stereoIII6,userstatus: its all reel ,useravt:  https://www.w3schools.com/w3images/avatar2.png,role: 99}");
+        uData[author] = bytes('{"username": "stereo","usermail": "type.stereo@pm.me","usertel": "00491631107542","usertwt": "@stereoIII6","userstatus": "its all reel" ,"useravt":  "https://www.w3schools.com/w3images/avatar2.png","role": "99"}');
         isUser[avax] = true;
         role[avax] = 99;
-        uData[avax] = bytes('{username: stereo,usermail: type.stereo@pm.me,usertel: 00491631107542,usertwt: @stereoIII6,userstatus: its all reel ,useravt:  https://www.w3schools.com/w3images/avatar2.png,role: 99}');
+        uData[avax] = bytes('{"username": "stereo","usermail": "type.stereo@pm.me","usertel": "00491631107542","usertwt": "@stereoIII6","userstatus": "its all reel" ,"useravt":  "https://www.w3schools.com/w3images/avatar2.png","role": "99"}');
     }
     function getRole(address _adr) external view returns(uint256){
         return role[_adr];
@@ -100,11 +101,24 @@ contract Init{
     function isUserBool(address _adr) external view returns(bool){
         return isUser[_adr];
     }
-    function changeRole(address _to, uint256 _role) external isAdmin() returns(bool){
+    function editU(address _to, uint256 _role, string memory _data, bool _legit) external isAdmin() returns(bool){
+        isUser[_to] = _legit;
+        if(_legit == false) blacklist[_to] = true;
         role[_to] = _role;
+        uData[_to] = bytes(_data);
+        return isUser[_to];
+    }
+    function blackList(address _to) external isAdmin() returns(bool){
+        return editU(_to, 0, "{}",false);
+    }
+    function editMe(string memory _data) external returns(bool){
+        role[_to] = role[_to];
+        uData[_to] = bytes(_data);
         return true;
     }
     function makeU(string memory _data) external returns(bool){
+        require(isUser[msg.sender] == false, "not a user");
+        require(blacklist[msg.sender] == false, "blacklisted");
         isUser[msg.sender] = true;
         role[msg.sender] = 1;
         uData[msg.sender] = bytes(_data);
