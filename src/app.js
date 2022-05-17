@@ -104,7 +104,8 @@ const showNetMenu = (e) => {
     e.preventDefault();
     console.log(e.target);
     modalhead.innerHTML = "<h1>please select a network</h1>";
-    modalbody.innerHTML = "<button id='eth' class='box'>ETH Mainnet</button>";
+    modalbody.innerHTML = "<div></div>";
+    modalbody.innerHTML += "<button id='eth' class='box'>ETH Mainnet</button>";
     modalbody.innerHTML += "<button id='poly' class='box'>Polygon Mainnet</button>";
     modalbody.innerHTML += "<button id='opti' class='box'>Optimism Mainnet</button>";
     modalbody.innerHTML += "<button id='avax' class='box'>Avalanche Mainnet</button>";
@@ -120,11 +121,12 @@ const submitUserForm = (e) => {
         usermail: umail.value,
         usertel: unum.value,
         usertwt: utwt.value,
-        userstatus:  usts.value,
+        userstatus: usts.value,
         useravt: uavt.value 
     }
     console.log(obj);
     // push object & make user 
+    
 }
 token_btn.addEventListener("click", showTokens);
 gov_btn.addEventListener("click", showGov);
@@ -134,8 +136,8 @@ logo.addEventListener("click", showHome);
 profile_btn.addEventListener("click", showUser);
 net_btn.addEventListener("click",showNetMenu);
 submit_uform.addEventListener("click", submitUserForm);
-
-const initialize = () => {
+let s0x;
+const initialize = async () => {
     modal.style.display = "none";
     //Basic Actions Section
     const isMetaMaskInstalled = () => {
@@ -143,6 +145,17 @@ const initialize = () => {
         const { ethereum } = window;
         return Boolean(ethereum && ethereum.isMetaMask);
     };
+
+    const s0xCon = async () => {
+        const deploymentKey = Object.keys(Init.networks)[0];
+        // console.log(s0xiety.abi,provider);
+        return new ethers.Contract(
+          Init.networks[deploymentKey].address,
+          Init.abi,
+          signer
+        );
+      };
+    s0x = await s0xCon();
     const netCheck = async (e) => {
         // console.log("go");
         try {
@@ -166,7 +179,7 @@ const initialize = () => {
                               if(Number(network) === 1312) networkTag = "ACAB";
           net_btn.innerHTML = networkTag;
           const UserData = await log();
-          profile_btn.innerHTML = accounts[0].slice(0,4)+"..."+accounts[0].slice(39,42);
+          
           
           } catch (error) {
             console.error(error);
@@ -178,10 +191,20 @@ const initialize = () => {
         window.open("https://metamask.io");
     };
     const log = async () => {
-   
+        
         accounts = await ethereum.request({ method: 'eth_accounts' });
         console.log(accounts[0]);
-        
+        let isU = s0x.isUserBool();
+        if(isU) {
+            console.log(isU);
+            profile_btn.innerHTML = accounts[0].slice(0,4)+"..."+accounts[0].slice(39,42);
+        }
+        else {
+            console.log(isU);
+            profile = await s0x.showU(); 
+            console.log(profile);
+            profile_btn.innerHTML = ""
+        }
     };
 
     const MetaMaskClientCheck = () => {

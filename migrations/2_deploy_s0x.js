@@ -6,7 +6,7 @@ const Init = artifacts.require("Init");
 
 module.exports = function (deployer) {
   // deployer.deploy(s0xiety, process.env.ADMIN);
-  deployer.deploy(Init);
+  deployer.deploy(Init,'0x1Cd6F4D329D38043a6bDB3665c3a7b06F79B5242','');
 
 };
 
