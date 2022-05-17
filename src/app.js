@@ -242,7 +242,7 @@ const initialize = () => {
         } else {
         //If it is installed we change our button text
         profile_btn.disabled = true;
-        profile_btn.value = 'Get Listed !'
+        profile_btn.value = 'connect'
         profile_btn.addEventListener("click",netCheck);
         }
     };
