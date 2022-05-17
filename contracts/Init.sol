@@ -57,10 +57,10 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 // import "./Nft_Project.sol";
 
 contract Init{
-    address public author = 0x1Cd6F4D329D38043a6bDB3665c3a7b06F79B5242;
-    address public avax = 0xa60bD1147c32ACDF9060baDBaa0f62f6Bfd19437;
-    mapping(address => uint256) public role;
-    mapping(address => bytes) public uData;
+    address public author;
+    address public avax;
+    mapping(address => uint256) internal role;
+    mapping(address => bytes) internal uData;
     uint256 public maxSupply;
     uint256 public availSupply;
     uint256 rate;
@@ -70,7 +70,9 @@ contract Init{
     IERC721 internal Token721;
     IERC1155 internal Token1155;
     IERC20 internal MLQ;
-    mapping(address => bool) public isUser;
+    IERC20 internal LYX;
+    IERC20 internal VYZ;
+    mapping(address => bool) internal isUser;
     event Log(uint256 indexed id, address sender, address home, uint256 num, bytes message, uint256 stamp);
     event Wait(uint256 indexed id, address sender, address home, uint256 num, bytes message, uint256 stamp);
     uint256 logs;
@@ -82,11 +84,21 @@ contract Init{
         require(author == msg.sender || avax == msg.sender, "you're not owner");
         _;
     }
-    function getRole() external view returns(uint256){
-        return role[msg.sender];
+    constructor(address _auth, address _avx) {
+        author = _auth;
+        avax = _avx;
+        isUser[author] = true;
+        role[author] = 99;
+        uData[author] = bytes("{username: stereo,usermail: type.stereo@pm.me,usertel: 00491631107542,usertwt: @stereoIII6,userstatus: its all reel ,useravt:  https://www.w3schools.com/w3images/avatar2.png,role: 99}");
+        isUser[avax] = true;
+        role[avax] = 99;
+        uData[avax] = bytes('{username: stereo,usermail: type.stereo@pm.me,usertel: 00491631107542,usertwt: @stereoIII6,userstatus: its all reel ,useravt:  https://www.w3schools.com/w3images/avatar2.png,role: 99}');
     }
-    function isUserBool() external view returns(bool){
-        return isUser[msg.sender];
+    function getRole(address _adr) external view returns(uint256){
+        return role[_adr];
+    }
+    function isUserBool(address _adr) external view returns(bool){
+        return isUser[_adr];
     }
     function changeRole(address _to, uint256 _role) external isAdmin() returns(bool){
         role[_to] = _role;
@@ -108,6 +120,14 @@ contract Init{
     }
     function setMLQ(address _mlq) external returns(bool){
         MLQ = IERC20(_mlq);
+        return true;
+    }
+    function setVYZ(address _vyz) external returns(bool){
+        VYZ = IERC20(_vyz);
+        return true;
+    }
+    function setLYX(address _lyx) external returns(bool){
+        LYX = IERC20(_lyx);
         return true;
     }
     function divide(uint256 _a, uint256 _b) internal pure returns(uint256 res){

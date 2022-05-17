@@ -136,8 +136,8 @@ logo.addEventListener("click", showHome);
 profile_btn.addEventListener("click", showUser);
 net_btn.addEventListener("click",showNetMenu);
 submit_uform.addEventListener("click", submitUserForm);
-let s0x;
-const initialize = async () => {
+
+const initialize = () => {
     modal.style.display = "none";
     //Basic Actions Section
     const isMetaMaskInstalled = () => {
@@ -148,14 +148,14 @@ const initialize = async () => {
 
     const s0xCon = async () => {
         const deploymentKey = Object.keys(Init.networks)[0];
-        // console.log(s0xiety.abi,provider);
+        console.log(Init.abi,Init.networks[deploymentKey].address,signer);
         return new ethers.Contract(
           Init.networks[deploymentKey].address,
           Init.abi,
           signer
         );
       };
-    s0x = await s0xCon();
+    
     const netCheck = async (e) => {
         // console.log("go");
         try {
@@ -178,12 +178,12 @@ const initialize = async () => {
                               if(Number(network) === 43113) networkTag =  "Fuji";
                               if(Number(network) === 1312) networkTag = "ACAB";
           net_btn.innerHTML = networkTag;
-          const UserData = await log();
-          
+          profile = await log();
+          console.log(profile);
           
           } catch (error) {
             console.error(error);
-            profile_btn.innerText = 'GET WHITELISTED !';
+            profile_btn.innerText = 'error';
           }
     }
     const clickInstall = () => {
@@ -191,16 +191,22 @@ const initialize = async () => {
         window.open("https://metamask.io");
     };
     const log = async () => {
-        
+        const s0x = await s0xCon();
         accounts = await ethereum.request({ method: 'eth_accounts' });
-        console.log(accounts[0]);
-        let isU = s0x.isUserBool();
-        if(isU) {
-            console.log(isU);
+        console.log(accounts[0],provider.getCode(accounts[0]));
+        
+        const pro = await s0x.showU();
+        let isUser = false;
+        if(pro.role >= 1) isUser = true;
+        console.log(pro)
+        if(isUser) { // 
+            console.log(isUser);
+            if(Number(role._hex) >= 99) profile_btn.style.background = "tomato";
             profile_btn.innerHTML = accounts[0].slice(0,4)+"..."+accounts[0].slice(39,42);
+            return pro;
         }
         else {
-            console.log(isU);
+            console.log(isUser);
             profile = await s0x.showU(); 
             console.log(profile);
             profile_btn.innerHTML = ""
