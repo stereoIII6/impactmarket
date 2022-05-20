@@ -17,7 +17,7 @@ const ipfs = client.create({host: "ipfs.infura.io",
 port: "5001",
 protocol: "https"});
 const Init = require("../dist/contracts/Init.json");
-const List = require("../dist/contracts/List.json");
+const Connect = require("../dist/contracts/Connect.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
@@ -93,7 +93,6 @@ const uploadAFile = async (e) => {
     usimg.src = "https://ipfs.io/ipfs/"+result.path;
     avt.src = "https://ipfs.io/ipfs/"+result.path;
 };
-
 const copyToClip = (e) => {
     e.preventDefault();
     // console.log(fileURL.value);
@@ -104,7 +103,7 @@ const copyToClip = (e) => {
     }); 
     submitIpfs.removeEventListener("click",copyToClip); 
 };
-const s0xCon = async () => {
+const s0xInit = async () => {
     const deploymentKey = Object.keys(Init.networks)[0];
     console.log(Init.abi,Init.networks[deploymentKey].address,signer);
     return new ethers.Contract(
@@ -112,7 +111,16 @@ const s0xCon = async () => {
       Init.abi,
       signer
     );
-  };
+};
+const s0xConnect = async () => {
+    const deploymentKey = Object.keys(Connect.networks)[0];
+    console.log(Connect.abi,Connect.networks[deploymentKey].address,signer);
+    return new ethers.Contract(
+      Connect.networks[deploymentKey].address,
+      Connect.abi,
+      signer
+    );
+};
 const showTokens = (e) => {
     e.preventDefault();
     console.log(e.target);
@@ -211,10 +219,7 @@ const initialize = () => {
         //Have to check the ethereum binding on the window object to see if it's installed
         const { ethereum } = window;
         return Boolean(ethereum && ethereum.isMetaMask);
-    };
-
-    
-    
+    }; 
     const netCheck = async (e) => {
         // console.log("go");
         try {
@@ -250,7 +255,8 @@ const initialize = () => {
         window.open("https://metamask.io");
     };
     const log = async () => {
-        const s0x = await s0xCon();
+        const s0x = await s0xInit();
+        const s0xCon = await s0xConnect();
         accounts = await ethereum.request({ method: 'eth_accounts' });
         console.log(accounts[0],provider.getCode(accounts[0]));
         file.addEventListener("change",captureFile);
