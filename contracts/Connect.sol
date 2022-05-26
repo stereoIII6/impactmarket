@@ -21,12 +21,12 @@
 //                                                                                                                                                                                  //
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 //                                                                                                                                                                                  //
-//      @dev            ::                                                                                                                                                          //
-//      @msg            ::                                                                                                                                                          //
-//      @github         ::                                                                                                                                                          //
+//      @dev            ::              Juan Xavier Valverde                                                                                                                                    //
+//      @msg            ::              juanxaviervm@hotmail.com                                                                                                                               //
+//      @twitter        ::              @JuanXavier                                                                                                                                             //
+//      @github         ::              @JuanXavier                                                                                                                                             //
 //                                                                                                                                                                                  //
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-//                                                                                                                                                                                  //
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //                                                                                                                                                                                  //
 //      @author         ::              stereoIII6.dao                                                                                                                              //
 //      msg             ::              type.stereo@pm.me                                                                                                                           //
 //      @github         ::              @stereoIII6                                                                                                                                 //
@@ -612,7 +612,32 @@ contract NFT_Project is ERC721URIStorage {
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 //                                                                                                                                                                                  //
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-contract SFT_Project {   
+contract SFT_Project is ERC1155 {
+    address internal admin;
+    //      user    => amount
+    mapping(address => uint256) public myNFTAmount;
+    //      user    => wallet id        => token id
+    mapping(address => mapping(uint256 => uint256)) public myNFTs;
+    //      token id    => token uri
+    mapping(uint256 => string) public _tokenURIz;
+    // total amount of minted tokens
+    uint256 public total;
+    // maximum amount of tokens to mint
+    uint256 public max;
+    // base uri that points to ipfs
+    string internal baseURI;
+    // decimal spaces wanted at eth level
+    uint256 internal digits;
+    // maximum amount of tokens per lootbox
+    uint internal maxBoxSize;
+    constructor(address _author, uint256 _max, string memory _name, string memory _baseUri, uint256 _n, uint256 _m) ERC1155(_name) {
+        admin = _author; // author from input
+        max = _max;
+        total = 1;
+        baseURI = _baseUri;
+        digits = 10 ** (18 - _n);
+        maxBoxSize = _m;
+    }
 }
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 //  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   //
@@ -626,7 +651,7 @@ contract TKN_Factory  is InitFace , TokenomicSets{
     uint256 internal digits;
     // ERC721 internal project;
     TKN_Project internal project;
-    constructor(address _auth, address _avax, address _initAdr) InitFace(_initAdr){
+    constructor(address _initAdr) InitFace(_initAdr){
         digits = fx.findig;
     }  
     function makeProject(address _author, uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n) external returns(address){
@@ -652,7 +677,7 @@ contract NFT_Factory  is InitFace , TokenomicSets{
     // ERC721 internal project;
     NFT_Project internal project;
 
-    constructor(address _auth, address _avax, address _initAdr) InitFace(_initAdr) {
+    constructor( address _initAdr) InitFace(_initAdr) {
         digits = fx.findig;
     }
 
@@ -672,7 +697,361 @@ contract NFT_Factory  is InitFace , TokenomicSets{
 //                                                                                                                                                                                  //
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 contract SFT_Factory  is InitFace , TokenomicSets{
-    constructor(address _auth, address _avax, address _initAdr) InitFace(_initAdr){}
+    mapping(uint256 => address) public projects;
+    mapping(address => ERC1155) public projectMap;
+    uint256 public contracts;
+    uint256 internal digits;
+    // ERC721 internal project;
+    SFT_Project internal project;
+    constructor( address _initAdr) InitFace(_initAdr){
+        digits = fx.findig;
+    }
+    function makeProject(address _author, uint256 _max, string memory _name, string memory _uri, uint256 _n, uint256 _m) external returns(address){
+        project = new SFT_Project(_author, _max, _name, _uri, _n, _m);
+        address a = address(project);
+        projects[contracts] = a;
+        projectMap[a] = project;
+        contracts++;
+        return a;
+    }
+
+}
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+//  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   //
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+//                                                                                                                                                                                  //
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+contract PoolMaker is ERC20, InitFace , TokenomicSets{
+    event Log(
+		uint256 indexed id,
+		address sender,
+		address home,
+		uint256 num,
+		bytes message,
+		uint256 time
+	);
+    mapping(uint256 => address) public projects;
+    mapping(address => ERC1155) public projectMap;
+    uint256 public contracts;
+    uint256 internal digits;
+    IERC20 public WETH = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+	IERC20 public rSHK;
+	IERC20 public low;
+	IERC20 public high;
+    IERC20 internal Token;
+
+	mapping(address => uint256) stakedWETH;
+	mapping(address => uint256) stakedSHK;
+
+	//pool Id => user => lowCurrencyQuantity
+	mapping(uint256 => mapping(address => uint256)) addedLiquidity;
+    struct Transaction {
+		uint256 id;
+		address user;
+		address token1;
+		uint256 amount1;
+		address token2;
+		uint256 amount2;
+		uint256 time;
+	}
+	Transaction[] public txs;
+	uint256 txCount;
+
+	struct Liquidity {
+		uint256 id;
+		address lowCurrency;
+		address highCurrency;
+		uint256 maxSizeLow;
+		uint256 maxSizeHigh;
+		uint256 currSizeLow;
+		uint256 currSizeHigh;
+		uint256 rate;
+		uint256 fee;
+	}
+	Liquidity[] public pools;
+	uint256 poolCount;
+    constructor( address _initAdr, address _rSHK) ERC20("Shake Token", "SHK") InitFace(_initAdr){
+        digits = fx.findig;
+        rSHK = IERC20(_rSHK);
+    } 
+    
+    	function makePool(
+		address lowCurrency,
+		address highCurrency,
+		uint256 lowSize,
+		uint256 highSize,
+		uint256 rate,
+		uint256 fee
+	) external returns (bool) {
+		pools.push(
+			Liquidity(poolCount, lowCurrency, highCurrency, lowSize, highSize, 0, 0, rate, fee)
+		);
+		poolCount++;
+
+		emit Log(init.getLogs(), msg.sender, address(this), 999, bytes('Pool made'), block.timestamp);
+		init.setLogs();
+
+		txs.push(
+			Transaction(txCount, msg.sender, lowCurrency, 0, highCurrency, 0, block.timestamp)
+		);
+		txCount++;
+
+		return true;
+	}
+
+	function addLiquidity(uint256 _id, uint256 _lowAmount) external payable returns (bool) {
+		Liquidity memory currPool = pools[_id];
+		low = IERC20(currPool.lowCurrency);
+		high = IERC20(currPool.highCurrency);
+
+		uint256 _highAmount = _lowAmount * currPool.rate;
+		require(low.balanceOf(msg.sender) >= _lowAmount, 'invalid amount');
+		require(high.balanceOf(msg.sender) >= _highAmount, 'invalid amount');
+		require(low.allowance(msg.sender, address(this)) >= _lowAmount);
+		require(high.allowance(msg.sender, address(this)) >= _highAmount);
+		require((currPool.maxSizeLow - currPool.currSizeLow) >= _lowAmount);
+
+		// todo: Optional? Require that the transferFrom txs are successful before minting
+		low.transferFrom(msg.sender, address(this), _lowAmount);
+		high.transferFrom(msg.sender, address(this), _highAmount);
+
+		//PercentageOfTotalPoolSize = (100 / maxSIze) * _lowAmount
+		uint256 sharePercentage = _divide(10**8, currPool.maxSizeLow) * _lowAmount;
+
+		_mint(msg.sender, sharePercentage);
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				currPool.lowCurrency,
+				_lowAmount,
+				currPool.highCurrency,
+				_highAmount,
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			init.getLogs(),
+			msg.sender,
+			address(this),
+			_lowAmount,
+			bytes('Liquidity added'),
+			block.timestamp
+		);
+		init.setLogs();
+
+		currPool.currSizeLow += _lowAmount;
+		addedLiquidity[currPool.id][msg.sender] += _lowAmount;
+		return true;
+	}
+
+	function removeLiquidity(uint256 _id, uint256 _lowAmount)
+		external
+		payable
+		returns (bool){
+		Liquidity memory currPool = pools[_id];
+		require(addedLiquidity[currPool.id][msg.sender] >= _lowAmount);
+		require(currPool.currSizeLow >= _lowAmount);
+		low = IERC20(currPool.lowCurrency);
+		high = IERC20(currPool.highCurrency);
+
+		uint256 _highAmount = _lowAmount * currPool.rate;
+		addedLiquidity[currPool.id][msg.sender] -= _lowAmount;
+		currPool.currSizeLow -= _lowAmount;
+		low.transfer(msg.sender, _lowAmount);
+		high.transfer(msg.sender, _highAmount);
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				currPool.lowCurrency,
+				_lowAmount,
+				currPool.highCurrency,
+				_highAmount,
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			init.getLogs(),
+			msg.sender,
+			address(this),
+			_lowAmount,
+			bytes('Liquidity removed'),
+			block.timestamp
+		);
+		init.setLogs();
+
+		return true;
+	}
+
+	function stakeSHK(uint256 _amount) external returns (bool) {
+		require(balanceOf(msg.sender) >= _amount, 'Invalid amount');
+		transferFrom(msg.sender, address(this), _amount);
+		stakedSHK[msg.sender] += _amount;
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				address(this), //todo: replace with address of SHK token
+				_amount,
+				address(0x0),
+				0,
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			init.getLogs(),
+			msg.sender,
+			address(this),
+			_amount,
+			bytes('Tokens staked'),
+			block.timestamp
+		);
+		init.setLogs();
+
+		return true;
+	}
+
+	//TODO: Declare rSHK, calculate amount of rSHK for staking
+	function unstakeSHK(uint256 _amount) external returns (bool) {
+		require(stakedSHK[msg.sender] >= _amount, 'Invalid amount');
+		stakedSHK[msg.sender] -= _amount;
+		transfer(msg.sender, _amount);
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				address(this), //todo: replace with address of SHK token
+				_amount,
+				address(0x0), // //todo: replace with address of rSHK token
+				0, // replace with amount (according to staked value and timeframe)
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			init.getLogs(),
+			msg.sender,
+			address(this),
+			_amount,
+			bytes('Tokens unstaked'),
+			block.timestamp
+		);
+		init.setLogs();
+
+		return true;
+	}
+	function swapLowHigh(uint256 _id, uint256 _lowAmount) public payable returns (bool) {
+		Liquidity memory currPool = pools[_id];
+		low = IERC20(currPool.lowCurrency);
+		high = IERC20(currPool.highCurrency);
+
+		require(low.balanceOf(msg.sender) >= _lowAmount);
+		require(_lowAmount + currPool.currSizeLow <= currPool.maxSizeLow);
+
+		uint256 _highAmount = currPool.rate * _lowAmount;
+
+		// IDK if this is necessary or if Solidity reverts in case value goes under 0 (since its an uint and not an int)
+		require(currPool.currSizeHigh - _highAmount >= 0);
+
+		uint256 adminFee = _divide((_lowAmount * currPool.fee), 100);
+		uint256 amountOut = _highAmount - adminFee;
+
+		// low.transferFrom(msg.sender, admin, adminFee);
+		low.transferFrom(msg.sender, address(this), _lowAmount);
+
+		currPool.currSizeLow += _lowAmount;
+		currPool.currSizeHigh -= amountOut;
+		high.transferFrom(address(this), msg.sender, amountOut);
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				currPool.lowCurrency,
+				_lowAmount,
+				currPool.highCurrency,
+				amountOut,
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			init.getLogs(),
+			msg.sender,
+			address(this),
+			_lowAmount,
+			bytes('Swapped low-high'),
+			block.timestamp
+		);
+		init.setLogs();
+
+		return true;
+	}
+
+	function swapHIghLow(uint256 _id, uint256 _highAmount) public payable returns (bool) {
+		Liquidity memory currPool = pools[_id];
+		low = IERC20(currPool.lowCurrency);
+		high = IERC20(currPool.highCurrency);
+
+		require(high.balanceOf(msg.sender) >= _highAmount);
+		require(_highAmount + currPool.currSizeHigh <= currPool.maxSizeHigh);
+
+		uint256 _lowAmount = currPool.rate * _highAmount;
+
+		// IDK if this is necessary or if Solidity reverts in case value goes under 0 (since its an uint and not an int)
+		require(currPool.currSizeLow - _lowAmount >= 0);
+
+		uint256 adminFee = _divide((_highAmount * currPool.fee), 100); //check math
+		uint256 amountOut = _lowAmount - adminFee;
+		// high.transferFrom(msg.sender, admin, adminFee);
+		high.transferFrom(msg.sender, address(this), amountOut);
+		currPool.currSizeHigh += _highAmount;
+		currPool.currSizeLow -= amountOut;
+		low.transferFrom(address(this), msg.sender, _highAmount);
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				currPool.highCurrency,
+				_highAmount,
+				currPool.lowCurrency,
+				amountOut,
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			init.getLogs(),
+			msg.sender,
+			address(this),
+			_highAmount,
+			bytes('Swapped high-low'),
+			block.timestamp
+		);
+		init.setLogs();
+
+		return true;
+	}
+
+	function _divide(uint256 _a, uint256 _b) internal pure returns (uint256 res) {
+		uint256 rem = _a % _b;
+		res = (_a - rem) / _b;
+	}
 }
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 //  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   //

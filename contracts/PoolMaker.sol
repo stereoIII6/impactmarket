@@ -218,8 +218,7 @@ contract PoolMaker is ERC20 {
 	function removeLiquidity(uint256 _id, uint256 _lowAmount)
 		external
 		payable
-		returns (bool)
-	{
+		returns (bool){
 		Liquidity memory currPool = pools[_id];
 		require(addedLiquidity[currPool.id][msg.sender] >= _lowAmount);
 		require(currPool.currSizeLow >= _lowAmount);
@@ -320,70 +319,6 @@ contract PoolMaker is ERC20 {
 
 		return true;
 	}
-
-	function stakeWETH(uint256 _amount) public payable returns (bool) {
-		require(WETH.balanceOf(msg.sender) >= _amount);
-		WETH.transferFrom(msg.sender, address(this), _amount);
-		stakedWETH[msg.sender] += _amount;
-
-		txs.push(
-			Transaction(
-				txCount,
-				msg.sender,
-				address(WETH),
-				_amount,
-				address(0x0), // //todo: replace with address of rSHK token
-				0, // replace with amount according to staked value (and time as well?)
-				block.timestamp
-			)
-		);
-		txCount++;
-
-		emit Log(
-			logs,
-			msg.sender,
-			address(this),
-			_amount,
-			bytes('WETH staked'),
-			block.timestamp
-		);
-		logs++;
-
-		return true;
-	}
-
-	//TODO: Declare rSHK, calculate amount of rSHK tp give for staking
-	function unstakeWETH(uint256 _amount) public payable returns (bool) {
-		require(stakedWETH[msg.sender] >= _amount);
-		stakedWETH[msg.sender] += _amount;
-		WETH.transferFrom(address(this), msg.sender, _amount);
-
-		txs.push(
-			Transaction(
-				txCount,
-				msg.sender,
-				address(0x0),
-				0,
-				address(WETH),
-				_amount,
-				block.timestamp
-			)
-		);
-		txCount++;
-
-		emit Log(
-			logs,
-			msg.sender,
-			address(this),
-			_amount,
-			bytes('WETH unstaked'),
-			block.timestamp
-		);
-		logs++;
-
-		return true;
-	}
-
 	function swapLowHigh(uint256 _id, uint256 _lowAmount) public payable returns (bool) {
 		Liquidity memory currPool = pools[_id];
 		low = IERC20(currPool.lowCurrency);
@@ -479,7 +414,68 @@ contract PoolMaker is ERC20 {
 
 		return true;
 	}
+	function stakeWETH(uint256 _amount) public payable returns (bool) {
+		require(WETH.balanceOf(msg.sender) >= _amount);
+		WETH.transferFrom(msg.sender, address(this), _amount);
+		stakedWETH[msg.sender] += _amount;
 
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				address(WETH),
+				_amount,
+				address(0x0), // //todo: replace with address of rSHK token
+				0, // replace with amount according to staked value (and time as well?)
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			logs,
+			msg.sender,
+			address(this),
+			_amount,
+			bytes('WETH staked'),
+			block.timestamp
+		);
+		logs++;
+
+		return true;
+	}
+
+	//TODO: Declare rSHK, calculate amount of rSHK tp give for staking
+	function unstakeWETH(uint256 _amount) public payable returns (bool) {
+		require(stakedWETH[msg.sender] >= _amount);
+		stakedWETH[msg.sender] += _amount;
+		WETH.transferFrom(address(this), msg.sender, _amount);
+
+		txs.push(
+			Transaction(
+				txCount,
+				msg.sender,
+				address(0x0),
+				0,
+				address(WETH),
+				_amount,
+				block.timestamp
+			)
+		);
+		txCount++;
+
+		emit Log(
+			logs,
+			msg.sender,
+			address(this),
+			_amount,
+			bytes('WETH unstaked'),
+			block.timestamp
+		);
+		logs++;
+
+		return true;
+	}
 	function changeFee(uint256 _id, uint256 _newFee) external adminOnly {
 		pools[_id].fee = _newFee;
 	}
