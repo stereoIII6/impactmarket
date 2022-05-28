@@ -551,11 +551,13 @@ contract Affilly8 is InitFace , TokenomicSets{
 contract TKN_Project is ERC20 {
     uint256 maxTKN;
     address admin;
+    address avax;
     string img;
     uint256 digits;
-    constructor(address _author, uint256 _max,string memory _name, string memory _sym, string memory _baseUri, uint256 _n) ERC20(_name, _sym){
+    constructor(address _author, address _avax, uint256 _max,string memory _name, string memory _sym, string memory _baseUri, uint256 _n) ERC20(_name, _sym){
         maxTKN = _max;
         admin = _author;
+        avax = _avax;
         img = _baseUri;
         digits = 10 ** (18 - _n);
     }
@@ -572,6 +574,7 @@ contract NFT_Project is ERC721URIStorage {
     Counters.Counter internal _tokenIds;
     // admin account = author 
     address internal admin;
+    address internal avax;
     //      user    => amount
     mapping(address => uint256) public myNFTAmount;
     //      user    => wallet id        => token id
@@ -590,8 +593,9 @@ contract NFT_Project is ERC721URIStorage {
     uint internal maxBoxSize;
 
 
-    constructor(address _author, uint256 _max, string memory _name, string memory _sym, string memory _baseUri, uint256 _n, uint256 _m) ERC721(_name, _sym) {
+    constructor(address _author, address _avax, uint256 _max, string memory _name, string memory _sym, string memory _baseUri, uint256 _n, uint256 _m) ERC721(_name, _sym) {
         admin = _author; // author from input
+        avax = _avax;
         max = _max;
         total = 1;
         baseURI = _baseUri;
@@ -684,8 +688,8 @@ contract TKN_Factory  is InitFace , TokenomicSets{
     constructor(address _initAdr) InitFace(_initAdr){
         digits = fx.findig;
     }  
-    function makeProject(address _author, uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n) external returns(address){
-        project = new TKN_Project(_author, _max, _name, _sym, _uri, _n);
+    function makeProject(address _author, address _avax, uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n) external returns(address){
+        project = new TKN_Project(_author, _avax, _max, _name, _sym, _uri, _n);
         address a = address(project);
         projects[contracts] = a;
         projectMap[a] = project;
@@ -711,8 +715,8 @@ contract NFT_Factory  is InitFace , TokenomicSets{
         digits = fx.findig;
     }
 
-    function makeProject(address _author, uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n, uint256 _m) external returns(address){
-        project = new NFT_Project(_author, _max, _name, _sym, _uri, _n, _m);
+    function makeProject(address _author, address _avax, uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n, uint256 _m) external returns(address){
+        project = new NFT_Project(_author, _avax, _max, _name, _sym, _uri, _n, _m);
         address a = address(project);
         projects[contracts] = a;
         projectMap[a] = project;
