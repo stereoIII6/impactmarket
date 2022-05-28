@@ -312,7 +312,7 @@
         1217
       ],
       "IERC165": [
-        3547
+        3749
       ]
     },
     "id": 1218,
@@ -337,7 +337,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1218,
-        "sourceUnit": 3548,
+        "sourceUnit": 3750,
         "src": "120:47:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -350,7 +350,7 @@
               "id": 1100,
               "name": "IERC165",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 3547,
+              "referencedDeclaration": 3749,
               "src": "357:7:1"
             },
             "id": 1101,
@@ -371,7 +371,7 @@
         "id": 1217,
         "linearizedBaseContracts": [
           1217,
-          3547
+          3749
         ],
         "name": "IERC1155",
         "nameLocation": "345:8:1",
@@ -1754,7 +1754,7 @@
         1217
       ],
       "IERC165": [
-        3547
+        3749
       ]
     },
     "id": 1218,
@@ -1779,7 +1779,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1218,
-        "sourceUnit": 3548,
+        "sourceUnit": 3750,
         "src": "120:47:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1792,7 +1792,7 @@
               "id": 1100,
               "name": "IERC165",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 3547,
+              "referencedDeclaration": 3749,
               "src": "357:7:1"
             },
             "id": 1101,
@@ -1813,7 +1813,7 @@
         "id": 1217,
         "linearizedBaseContracts": [
           1217,
-          3547
+          3749
         ],
         "name": "IERC1155",
         "nameLocation": "345:8:1",
@@ -3195,7 +3195,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-05-19T20:34:10.111Z",
+  "updatedAt": "2022-05-27T22:50:15.197Z",
   "devdoc": {
     "details": "Required interface of an ERC1155 compliant contract, as defined in the https://eips.ethereum.org/EIPS/eip-1155[EIP]. _Available since v3.1._",
     "events": {

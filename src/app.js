@@ -3,7 +3,7 @@
 //          MAIN CONTRACT               //
 //          III6 LifeAnd.Eth            //
 //          stereoIII6                  //
-//          stereodocbush@gmail.com      //
+//          stereodocbush@gmail.com     //
 //                                      //
 //////////////////////////////////////////
 
@@ -18,6 +18,9 @@ port: "5001",
 protocol: "https"});
 const Init = require("../dist/contracts/Init.json");
 const Connect = require("../dist/contracts/Connect.json");
+const MLQ = require("../dist/contracts/MLQ.json");
+const VYZ = require("../dist/contracts/TKN_Project.json");
+const LYX = require("../dist/contracts/TKN_Project.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
